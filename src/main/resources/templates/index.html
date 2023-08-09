@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <head th:replace="fragments/head :: head"></head>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <a href="/" class="brand-title">Blogger</a>
+            <nav>
+                <a href="/">Home</a>
+                <a th:href="@{/publish-blog}" class="add-blog">Add Blog</a>
+            </nav>
+        </div>
+
+        <div class="text-center">
+            <h1>A Modern Publishing Platform</h1>
+            <p>Grow Your Audience and build your online brand</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="text-center">
+            <h2 style="color: #635985;">All Blogs(<span th:text="${blogCount}"></span>)</h2>
+            <div id="divider">
+                <div class="divider"></div>
+            </div>
+        </div>
+
+        <div class="blogs reveal">
+            <!-- Checking if there are no blogs -->
+            <div th:if="${blogs.isEmpty()}">
+                <p>No blogs available at the moment.</p>
+            </div>
+
+            <!-- Looping through and display blog details -->
+            <div class="row">
+                <div th:each="blog : ${blogs}" class="col-lg-4">
+                    <div class="card p-4">
+                        <h5 th:text="${blog.title}">Blog Title</h5>
+                        <span class="blog-content" th:text="${#strings.length(blog.content) >= 200 ? #strings.substring(blog.content, 0, 200) : blog.content}"></span>
+                        <a th:href="@{/blog/{id}(id=${blog.id})}" class="read-more">Read More...</a>
+                        <p>Created At: <span class="date" th:text="${#temporals.format(blog.createdAt, 'dd-MM-yyyy')}"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script th:src="@{Js/script.js}"></script>
+</body>
+</html>
